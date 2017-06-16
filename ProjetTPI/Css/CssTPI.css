@@ -1,0 +1,50 @@
+/* 
+    Created on : 7 juin 2017, 07:57:13
+    Author     : RAMUSHIA_INFO
+*/
+body{
+    margin: 0px;
+    padding: 0px;
+}
+.row{
+    width: 80%;
+    margin: auto;
+    background-color: #0275D8;
+}
+ul li {
+    list-style-type: none;
+}
+.entetetab{
+    border : solid 1px black;
+}
+#editer{
+    background-color: lightgreen;
+}
+#supp{
+    background-color: lightcoral;
+}
+.corpstab{
+    background-color: lightcyan;
+    padding-left: 5px;
+}
+.entetetab{
+    background: lightslategrey;
+}
+tr{
+    border: solid 1px black;
+}
+td{
+    text-align: center;
+}
+#filtrer{
+    margin-top: 20px;
+}
+#formulaire{
+    margin: auto;
+    border: solid 1px black;
+    width: 20%;
+    text-align: center;
+}
+
+
+
