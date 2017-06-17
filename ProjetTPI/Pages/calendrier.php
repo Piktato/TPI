@@ -86,7 +86,6 @@ $idCategorie = ""
                     } else {
                         afficherCalendrier(getCalendrierByCategorieSaison($choixCategorie, $choixSaison));
                     }
-//afficherListeMatch(getMatch());
                     ?>
 
                     <div class="col-md-2">
@@ -113,7 +112,9 @@ $idCategorie = ""
             </form>
         </div>
         <footer>
+            <div class="row" >
             <p>Ramushi Ardi Championnat Volley Relax TPI 2017</p>
+			</div>
         </footer>
 
 

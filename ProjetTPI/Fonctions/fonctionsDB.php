@@ -85,7 +85,17 @@ function getMatchByCategorieSaison($idCategorie,$annee) {
 function getEquipeByCategorieSaison($idCategorie,$annee) {
 
     $connexion = getConnexion();
-    $requete = $connexion->prepare("SELECT distinct equipe.id_equipe,equipe.nom_equipe,equipe.nom_responsable,equipe.mail_responsable,equipe.nom_salle,equipe.adresse_salle FROM `equipe`as equipe natural join categorie as cat , appartenir as app,`match` where cat.id_categorie = app.id_categorie and equipe.id_equipe = app.id_equipe and app.id_categorie like :idCategorie and annee = :annee group by equipe.id_equipe ");
+    $requete = $connexion->prepare("SELECT distinct equipe.id_equipe as \"equipe\",equipe.nom_equipe,equipe.nom_responsable,equipe.mail_responsable,equipe.nom_salle,equipe.adresse_salle FROM `equipe`as equipe natural join categorie as cat , appartenir as app,`match` where cat.id_categorie = app.id_categorie and equipe.id_equipe = app.id_equipe and app.id_categorie like :idCategorie and annee = :annee group by equipe.id_equipe ");
+    $requete->bindParam(':idCategorie', $idCategorie, PDO::PARAM_INT);
+    $requete->bindParam(':annee', $annee, PDO::PARAM_INT);
+    $requete->execute();
+    $resultat = $requete->fetchAll(PDO::FETCH_ASSOC);
+    return $resultat;
+}
+function getIdEquipeByCategorieSaison($idCategorie,$annee) {
+
+    $connexion = getConnexion();
+    $requete = $connexion->prepare("SELECT distinct equipe.id_equipe as \"equipe\"FROM `equipe`as equipe natural join categorie as cat , appartenir as app,`match` where cat.id_categorie = app.id_categorie and equipe.id_equipe = app.id_equipe and app.id_categorie like :idCategorie and annee = :annee group by equipe.id_equipe ");
     $requete->bindParam(':idCategorie', $idCategorie, PDO::PARAM_INT);
     $requete->bindParam(':annee', $annee, PDO::PARAM_INT);
     $requete->execute();
@@ -341,13 +351,57 @@ function getEquipeBySaisonCategorie($annee, $categorie) {
 
 function getChampionnat($annee, $equipe) {
     $connexion = getConnexion();
-    $requete = $connexion->prepare("select count(m.id_match),l.nom_equipe from `match` m INNER JOIN `equipe` l ON l.id_equipe = m.id_equipe_local INNER JOIN `equipe` v ON v.id_equipe = m.id_equipe_visiteur where l.id_equipe != v.id_equipe and l.id_equipe = :equipe and m.annee = :annee ");
+    $requete = $connexion->prepare("select count(m.id_match),l.nom_equipe from `match` m INNER JOIN `equipe` l ON l.id_equipe = m.id_equipe_local INNER JOIN `equipe` v ON v.id_equipe = m.id_equipe_visiteur inner join equipe e on e.id_equipe = :equipe  where l.id_equipe != v.id_equipe and e.id_equipe = :equipe and m.annee = :annee");
     $requete->bindParam(':equipe', $equipe, PDO::PARAM_INT);
     $requete->bindParam(':annee', $annee, PDO::PARAM_INT);
     $requete->execute();
     $resultat = $requete->fetchAll(PDO::FETCH_ASSOC);
     return $resultat;
 }
+function nbMatchLocal($equipe,$annee){
+	$connexion = getConnexion();
+    $requete = $connexion->prepare("select count(id_match) as \"nbMatch\" from `match` natural join equipe where  id_equipe = id_equipe_local and id_equipe = :equipe and annee = :annee");
+    $requete->bindParam(':equipe', $equipe, PDO::PARAM_INT);
+    $requete->bindParam(':annee', $annee, PDO::PARAM_INT);
+    $requete->execute();
+	$resultat = $requete->fetchAll(PDO::FETCH_ASSOC);
+	$nombreMatch =$resultat[0]["nbMatch"];
+    return $nombreMatch;
+}
+function nbMatchVisiteur($equipe,$annee){
+	$connexion = getConnexion();
+    $requete = $connexion->prepare("select count(id_match) as\"nbMatch\" from `match` natural join equipe where  id_equipe = id_equipe_visiteur and id_equipe = :equipe and annee = :annee");
+    $requete->bindParam(':equipe', $equipe, PDO::PARAM_INT);
+    $requete->bindParam(':annee', $annee, PDO::PARAM_INT);
+    $requete->execute();
+	$resultat = $requete->fetchAll(PDO::FETCH_ASSOC);
+	$nombreMatch =$resultat[0]["nbMatch"];
+    return $nombreMatch;
+}
+function nbMatch($equipe,$annee){
+	$nbMatch = 0;
+	$nbMatch = nbMatchLocal($equipe,$annee) + nbMatchVisiteur($equipe,$annee);
+	return $nbMatch;
+}
+function getEquipeClassement($annee, $categorie) {
+    $connexion = getConnexion();
+    $requete = $connexion->prepare("select a.id_equipe as \"equipe\" from appartenir a INNER JOIN `equipe` e ON e.id_equipe = a.id_equipe INNER JOIN `categorie` c ON c.id_categorie = a.id_categorie INNER JOIN `match`m on m.id_equipe_local = a.id_equipe WHERE c.id_categorie = :categorie and annee = :annee group by a.id_equipe");
+    $requete->bindParam(':annee', $annee, PDO::PARAM_INT);
+    $requete->bindParam(':categorie', $categorie, PDO::PARAM_INT);
+    $requete->execute();
+    $resultat = $requete->fetchAll(PDO::FETCH_ASSOC);
+	return $resultat;
+}
+function getEquipeName($annee){
+	$connexion = getConnexion();
+    $requete = $connexion->prepare("SELECT distinct nom_equipe FROM `equipe` e inner join `match` m on m.id_equipe_local = e.id_equipe inner join appartenir a on a.id_equipe = e.id_equipe inner join categorie c on c.id_categorie = a.id_categorie where m.annee = :annee");
+    $requete->bindParam(':annee', $annee, PDO::PARAM_INT);
+    $requete->execute();
+    $resultat = $requete->fetchAll(PDO::FETCH_ASSOC);
+	return $resultat;
+	
+}
+
 
 //Select
 //SELECT `id_match`,`date_match`,`annee`,equipe_local.nom_equipe,equipe_visiteur.nom_equipe FROM `match` natural join `equipe` as equipe_local,`equipe`as equipe_visiteur where equipe_local.id_equipe !=equipe_visiteur.id_equipe and equipe_local.id_equipe = id_equipe_local and equipe_visiteur.id_equipe = id_equipe_visiteur

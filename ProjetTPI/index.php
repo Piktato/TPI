@@ -2,14 +2,19 @@
 session_start();
 require './Fonctions/fonctionsDB.php';
 require './Fonctions/HtmlToPhp.php';
+require 'Pages/classClassement.php';
 
-$filtre = "1";
 $log = "login";
 $_SESSION["login"] = $log;
 $choixCategorie = 1;
 $choixSaison = 1;
 $equipe = [];
 $match = [];
+$_SESSION["triMatchCategorie"] = 1;
+$_SESSION["triMatchSaison"] = 1;
+$equipeClassement = [];
+$tabEquipe = [];
+$totalpoint =0 ;
 
 
 
@@ -34,7 +39,7 @@ if (isset($_REQUEST['filtrer'])) {
     $choixSaison = $_REQUEST["SelectSaison"];
     $_SESSION["Categorie"] = $choixCategorie;
     $_SESSION["Saison"] = $choixSaison;
-    $equipe = getEquipeBySaisonCategorie($choixSaison, $choixCategorie);
+    $equipe = getIdEquipeByCategorieSaison( $choixCategorie,$choixSaison);
     $_SESSION["equipe"] = $equipe;
 }
 ?>
@@ -74,22 +79,35 @@ if (isset($_REQUEST['filtrer'])) {
                     afficherSelectSaison(getAnnee());
                     afficherBtn();
                     if (isset($_REQUEST["filtrer"])) {
-                        // $equipe contient un tableau avec les points de l'équipe
-                        $match = getMatchBySaisonCategorie($choixSaison, $choixCategorie);
-                        echo "<div class=\"col-md-7\">";
-                        foreach ($equipe as $key => $score) {
+                        $match = getMatchBySaisonCategorie($choixSaison, $equipe[0]["equipe"]);
+                        
+						
+						$equipes = new equipe;
+						$tempEquipeName = getEquipeName($choixSaison);
+						$tempEquipeId = getEquipeClassement($choixSaison,$choixCategorie);
+							
+						for($i = 0;$i<count($tempEquipeName);$i++)
+						{
+							$totalpoint =0 ;
+							$equipes ->_nomEquipe[$i] = $tempEquipeName[$i]["nom_equipe"];
+							$equipes ->_idEquipe[$i] = $tempEquipeId[$i]["equipe"];
+							$equipes ->_nbMatch[$i] = nbMatch($equipes ->_idEquipe[$i],$choixSaison);
+							
+							$match = getMatchBySaisonCategorie($choixSaison, $equipes ->_idEquipe[$i]);
                             foreach ($match as $unMatch) {
                                 $noMatch = $unMatch['match'];
 
-                                $temp = CountSetGagneLocal($noMatch, $key);
+                                $temp = CountSetGagneLocal($noMatch,$equipes ->_idEquipe[$i]);
                                 $nbSet = $temp[0]["setGagne"];
 
-                                $temp = CountSetGagneVisiteur($noMatch, $key);
+                                $temp = CountSetGagneVisiteur($noMatch,$equipes ->_idEquipe[$i]);
                                 $nbSet += $temp[0]["setGagne"];
 
+								$equipes ->_nbSet[$i] = $nbSet;
+								
                                 $nbTotal = CountSetParMatch($noMatch);
-
-                                if ($nbSet == 3) {
+								
+								if ($nbSet == 3) {
                                     if ($nbTotal < 5)
                                     {
                                         $nbPoint = 3;
@@ -110,17 +128,49 @@ if (isset($_REQUEST['filtrer'])) {
                                 {
                                     $nbPoint = 0;
                                 }
-
-                                $equipe[$key] += $nbPoint;
-                                
-                                //echo "<p> " . $noMatch . " $nbPoint $nbSet, $nbTotal  <p>";
-                            }
-                            afficherChampionnat(getChampionnat($choixSaison,$key),$equipe[$key]);
-                        }
-                         echo"</div>";
+								
+								$totalpoint += $nbPoint;
+							}
+							$equipes ->_nbPts[$i] = $totalpoint;						
+							
+						}
+						
                         
-                         
+						$equipes->FaireClassement();
+						
+						$equipes->MettreOrdre();
+						echo "<div class=\"col-md-7\">";
+						echo "<table>";
+						echo "<tr>";
+						echo "<td class=\"entetetab\">Nombre de match</td>";
+						echo "<td class=\"entetetab\">Nom de l'équipe</td>";
+						echo "<td class=\"entetetab\">Nombre de points</td>";
+						echo "<td class=\"entetetab\">Classement</td>";
+						echo "</tr>";
+
+						
+						for($i = 0;$i<count($tempEquipeName);$i++){
+							echo "<tr>";
+							echo "<td>";
+							echo $equipes ->_nbMatch[$i] ;
+							echo"</td>";
+							echo "<td>";
+							echo $equipes ->_nomEquipe[$i] ;
+							echo"</td>";
+							echo "<td>";
+							echo $equipes ->_nbPts[$i] ;
+							echo"</td>";
+							echo "<td>";
+							echo $equipes ->_Classement[$i] ;
+							echo"</td>";
+							echo "</tr>";
+						}
+						
+						echo"</table>";
+						echo"</div>";
+						
                     }
+
                     ?>
 
                     <div class="col-md-2">
@@ -135,7 +185,9 @@ if (isset($_REQUEST['filtrer'])) {
             </form>
         </div>
         <footer>
+            <div class="row" >
             <p>Ramushi Ardi Championnat Volley Relax TPI 2017</p>
+			</div>
         </footer>
 
 

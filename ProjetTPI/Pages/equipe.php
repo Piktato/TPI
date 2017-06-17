@@ -5,7 +5,6 @@ require '../Fonctions/HtmlToPhp.php';
 
 
 $log = "login";
-$filtre = "1";
 $addEquipe = false;
 $addEquipeDB = false;
 $editerEquipe = false;
@@ -189,7 +188,9 @@ $idCategorie = ""
             </form>
         </div>
         <footer>
+            <div class="row" >
             <p>Ramushi Ardi Championnat Volley Relax TPI 2017</p>
+			</div>
         </footer>
 
 

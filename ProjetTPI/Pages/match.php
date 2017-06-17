@@ -55,6 +55,8 @@ if (isset($_REQUEST["newSaison"])) {
 if (isset($_REQUEST["filtrer"])) {
     $choixCategorie = $_REQUEST['SelectCategorie'];
     $choixSaison = $_REQUEST["SelectSaison"];
+    $_SESSION["triMatchSaison"] = $choixSaison;
+	$_SESSION["triMatchCategorie"] =$choixCategorie;
 }
 
 
@@ -98,11 +100,10 @@ if (isset($_REQUEST["filtrer"])) {
                     afficherSelectSaison(getAnnee());
                     afficherBtn();
                     if ($_SESSION["connecter"]) {
-                        afficherListeMatchAdmin(getMatchByCategorieSaison($choixCategorie,$choixSaison));
+                        afficherListeMatchAdmin(getMatchByCategorieSaison($_SESSION["triMatchSaison"],$_SESSION["triMatchCategorie"],getEquipeByCategorieSaison($_SESSION["triMatchSaison"],$_SESSION["triMatchCategorie"])));
                     } else {
-                        afficherListeMatch(getMatchByCategorieSaison($choixCategorie,$choixSaison));
+                        afficherListeMatch(getMatchByCategorieSaison($_SESSION["triMatchSaison"],$_SESSION["triMatchCategorie"],getEquipeByCategorieSaison($_SESSION["triMatchSaison"],$_SESSION["triMatchCategorie"])));
                     }
-//afficherListeMatch(getMatch());
                     ?>
 
                     <div class="col-md-2">
@@ -173,9 +174,13 @@ if (isset($_REQUEST["filtrer"])) {
                         if (($_SESSION["newSaison"] == 1)) {
                             addSaison(getCategorie());
                             if (isset($_REQUEST["btnAddSaison"])) {
-                                $local = getEquipeByCategorie($_REQUEST["PickCategorie"]);
-                                $visiteur = getEquipeByCategorie($_REQUEST["PickCategorie"]);
-                                $annee = getLastAnnee();
+								$annee = getLastAnnee();
+                                $local = getEquipeByCategorieSaison($_REQUEST["PickCategorie"],$_REQUEST["annee"]);
+                                $visiteur = getEquipeByCategorieSaison($_REQUEST["PickCategorie"],$_REQUEST["annee"]);
+								
+								echo "<pre>";
+								var_dump($local);
+								echo "</pre>";
                                 for ($j = 0; $j < count($local); $j++) {
                                     for ($k = 0; $k < count($visiteur); $k++) {
                                         if ($visiteur[$k] != $local[$j]) {
@@ -196,7 +201,9 @@ if (isset($_REQUEST["filtrer"])) {
             </form>
         </div>
         <footer>
+            <div class="row" >
             <p>Ramushi Ardi Championnat Volley Relax TPI 2017</p>
+			</div>
         </footer>
 
 

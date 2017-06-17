@@ -9,6 +9,7 @@ $_SESSION["newSaison"]= 0;
 $_SESSION["local"] = [];
 $_SESSION["visiteur"] = [];
 
+
 if(isset($_REQUEST['retour'])){
     header('Location:../index.php');
 }
@@ -61,7 +62,9 @@ if(isset($_REQUEST['valider']))
         <?php
         ?>
         <footer>
+			<div class="row" >
             <p>Ramushi Ardi Championnat Volley Relax TPI 2017</p>
+			</div>
         </footer>
     </body>
 </html>

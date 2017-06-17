@@ -307,34 +307,32 @@ function trierClassement($ptsA,$ptsB){
     
 }
 
-function afficherChampionnat($tableauAssociatif, $pts) {
-    
+function afficherChampionnat($equipes) {
     echo "<table>";
-    echo "<tr>";
-    echo "<td class=\"entetetab\">Nombre de match</td>";
-    echo "<td class=\"entetetab\">Nom de l'équipe</td>";
-    echo "<td class=\"entetetab\">Nombre de points</td>";
-    echo "<td class=\"entetetab\">Classement</td>";
-    echo "</tr>";
-    foreach ($tableauAssociatif as $enregistrement) {
-        echo "<tr>";
+	echo "<tr>";
+	echo "<td class=\"entetetab\">Nombre de match</td>";
+	echo "<td class=\"entetetab\">Nom de l'équipe</td>";
+	echo "<td class=\"entetetab\">Nombre de points</td>";
+	echo "<td class=\"entetetab\">Classement</td>";
+	echo "</tr>";
 
-        foreach ($enregistrement as $value) {
-            echo "<td class=\"corpstab\">" . $value . "</td>";
-            
-        }
-        echo "<td class=\"corpstab\">" . $pts . "</td>";
-
-        
-            
-           
-            
-            
-        
-        echo "</tr>";
-
-    }
-    
-    echo"</table>";
-   
+	
+		for($i = 0;$i<count($equipes);$i++){
+			echo "<tr>";
+			echo "<td>";
+			echo $equipes ->_nbMatch[$i] ;
+			echo"</td>";
+			echo "<td>";
+			echo $equipes ->_nomEquipe[$i] ;
+			echo"</td>";
+			echo "<td>";
+			echo $equipes ->_nbPts[$i] ;
+			echo"</td>";
+			echo "<td>";
+			echo $equipes ->_Classement[$i] ;
+			echo"</td>";
+			echo "</tr>";
+		}
+	
+	echo"</table>";
 }
