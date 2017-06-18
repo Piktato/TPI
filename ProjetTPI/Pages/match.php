@@ -13,6 +13,7 @@ $visiteur = [];
 $choixCategorie = 1;
 $choixSaison = 1;
 
+
 if (!(isset($_SESSION["connecter"]))) {
     $_SESSION["connecter"] = false;
 }
@@ -55,8 +56,6 @@ if (isset($_REQUEST["newSaison"])) {
 if (isset($_REQUEST["filtrer"])) {
     $choixCategorie = $_REQUEST['SelectCategorie'];
     $choixSaison = $_REQUEST["SelectSaison"];
-    $_SESSION["triMatchSaison"] = $choixSaison;
-	$_SESSION["triMatchCategorie"] =$choixCategorie;
 }
 
 
@@ -100,9 +99,9 @@ if (isset($_REQUEST["filtrer"])) {
                     afficherSelectSaison(getAnnee());
                     afficherBtn();
                     if ($_SESSION["connecter"]) {
-                        afficherListeMatchAdmin(getMatchByCategorieSaison($_SESSION["triMatchSaison"],$_SESSION["triMatchCategorie"],getEquipeByCategorieSaison($_SESSION["triMatchSaison"],$_SESSION["triMatchCategorie"])));
+                        afficherListeMatchAdmin(getMatchByCategorieSaison($choixCategorie,$choixSaison));
                     } else {
-                        afficherListeMatch(getMatchByCategorieSaison($_SESSION["triMatchSaison"],$_SESSION["triMatchCategorie"],getEquipeByCategorieSaison($_SESSION["triMatchSaison"],$_SESSION["triMatchCategorie"])));
+                        afficherListeMatch(getMatchByCategorieSaison($choixCategorie,$choixSaison));
                     }
                     ?>
 
@@ -124,14 +123,11 @@ if (isset($_REQUEST["filtrer"])) {
                         
                     } else {
                         if (isset($_REQUEST["btnAddSet"]) && $_SESSION["changementMatch"] == 1) {
-                            try {
                                 insertSet($_REQUEST["addMatchSet"], $_REQUEST["sLocal"], $_REQUEST["sVisiteur"], $_REQUEST["nSet"]);
 
                                 $addSetDB = false;
                                 $_SESSION["changementMatch"] = 0;
-                            } catch (Exception $exc) {
-                                echo "mauvaise données";
-                            }
+
                         }
                     }
                     if ($editerSet == TRUE) {
@@ -144,13 +140,10 @@ if (isset($_REQUEST["filtrer"])) {
 
                         if (isset($_REQUEST['btnEditerSet'])) {
                             if (isset($_SESSION['editerSet'])) {
-                                try {
                                     updateSet($_REQUEST["idChanger"], $_REQUEST["localChanger"], $_REQUEST["visiteurChanger"], $_REQUEST["noSetChanger"]);
                                     $_SESSION['editerSet'] = NULL;
                                     $_SESSION["changementMatch"] = FALSE;
-                                } catch (Exception $exc) {
-                                    echo "Erreur";
-                                }
+  
                             }
                         }
                     }
@@ -175,12 +168,8 @@ if (isset($_REQUEST["filtrer"])) {
                             addSaison(getCategorie());
                             if (isset($_REQUEST["btnAddSaison"])) {
 								$annee = getLastAnnee();
-                                $local = getEquipeByCategorieSaison($_REQUEST["PickCategorie"],$_REQUEST["annee"]);
-                                $visiteur = getEquipeByCategorieSaison($_REQUEST["PickCategorie"],$_REQUEST["annee"]);
-								
-								echo "<pre>";
-								var_dump($local);
-								echo "</pre>";
+                                $local = getEquipeByCategorieSaison($_REQUEST["PickCategorie"],$annee[0]["LastAnnee"]);
+                                $visiteur = getEquipeByCategorieSaison($_REQUEST["PickCategorie"],$annee[0]["LastAnnee"]);
                                 for ($j = 0; $j < count($local); $j++) {
                                     for ($k = 0; $k < count($visiteur); $k++) {
                                         if ($visiteur[$k] != $local[$j]) {

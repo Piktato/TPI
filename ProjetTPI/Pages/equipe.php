@@ -101,21 +101,17 @@ $idCategorie = ""
                 <div class="row bg-success">
 
                     <?php
-                    for ($i = 1;
-                    $i < count(getCategorie());
-                    $i++) {
-                    $idCategorie = "choix" . $i;
-                    }
+					afficherSelectCategorie(getCategorie());
+                    afficherSelectSaison(getAnnee());
+                    afficherBtn();
                     if ($_SESSION["connecter"]) {
-                    afficherListeEquipeAdmin(getEquipe());
+                    afficherListeEquipeAdmin(getEquipeByCategorieSaison($choixCategorie,$choixSaison));
                     } else {
                     afficherListeEquipe(getEquipeByCategorieSaison($choixCategorie,$choixSaison));
                     }
-
-                    //afficherListeMatch(getMatch());
                     ?>
 
-                    <div class="col-md-offset-3 col-md-2">
+                    <div class="col-md-2">
                         <ul>
                             <li><a href="../index.php">Accueil</a></li>
                             <li><a href="calendrier.php">Calendrier</a></li>
@@ -132,7 +128,6 @@ $idCategorie = ""
 
                     } else {
                     if (isset($_REQUEST["btnAddEquipe"]) && ($_SESSION["changementEquipe"] == 1)) {
-                    try {
                     if (($_REQUEST["nomEquipe"] == "") && ($_REQUEST["nomResp"] == "") && ($_REQUEST["mailResp"] == "") && ($_REQUEST["nomSalle"] == "") && ($_REQUEST["adresseSalle"] == "")) {
                     echo "Veuillez remplir les champs";
                     }
@@ -147,10 +142,6 @@ $idCategorie = ""
                     $addEquipeDB = false;
                     $_SESSION["changementEquipe"] = 0;
                     }
-                    } catch (Exception $exc) {
-                    echo "mauvaises données";
-                    }
-
                     }
                     }
                     //FILTER_VALIDATE_REGEXP, array("options" => array("regexp" =>$patternMail))

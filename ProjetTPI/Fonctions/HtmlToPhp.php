@@ -1,5 +1,9 @@
 <?php
 
+/*
+Parametre : tableau associatif
+Affiche la liste des matchs avec quatre input pour faire des changement.
+*/
 function afficherListeMatchAdmin($tableauAssociatif) {
     echo "<div class=\"col-md-7\">";
     echo "<table>";
@@ -32,6 +36,10 @@ function afficherListeMatchAdmin($tableauAssociatif) {
     echo"</div>";
 }
 
+/*
+Parametre : tableau associatif
+Affiche une liste déroulante avec les catégories.
+*/
 function afficherSelectCategorie($tabass) {
 
     $i = 1;
@@ -47,6 +55,10 @@ function afficherSelectCategorie($tabass) {
     echo "</div>";
 }
 
+/*
+Parametre : tableau associatif
+Affiche une liste déroulante avec les saisons.
+*/
 function afficherSelectSaison($tabass) {
 
     $i = 1;
@@ -62,6 +74,10 @@ function afficherSelectSaison($tabass) {
     echo "</div>";
 }
 
+/*
+Parametre : tableau associatif
+Affiche le calendrier des matchs avec un input pour faire des changements.
+*/
 function afficherCalendrierAdmin($tableauAssociatif) {
     echo "<div class=\"col-md-7\">";
     echo "<table>";
@@ -91,6 +107,10 @@ function afficherCalendrierAdmin($tableauAssociatif) {
     echo"</div>";
 }
 
+/*
+Parametre : tableau associatif
+Affiche le calendrier des matchs.
+*/
 function afficherCalendrier($tableauAssociatif) {
     echo "<div class=\"col-md-7\">";
     echo "<table>";
@@ -114,12 +134,16 @@ function afficherCalendrier($tableauAssociatif) {
     echo"</table>";
     echo"</div>";
 }
-
+/*
+Parametre : tableau associatif
+Affiche la liste des matchs.
+*/
 function afficherListeMatch($tableauAssociatif) {
     echo "<div class=\"col-md-7\">";
     echo "<table>";
     echo "<tr>";
     echo "<td class=\"entetetab\">Numero du Set</td>";
+	echo "<td class=\"entetetab\">Numero du Set</td>";
     echo "<td class=\"entetetab\">Date du match</td>";
     echo "<td class=\"entetetab\">Annee</td>";
     echo "<td class=\"entetetab\">Score local</td>";
@@ -141,7 +165,10 @@ function afficherListeMatch($tableauAssociatif) {
     echo"</table>";
     echo"</div>";
 }
-
+/*
+Parametre : tableau associatif
+Affiche la liste des équipes avec deux input pour faire des changements.
+*/
 function afficherListeEquipeAdmin($tableauAssociatif) {
     echo "<div class=\"col-md-7\">";
     echo "<table>";
@@ -171,7 +198,10 @@ function afficherListeEquipeAdmin($tableauAssociatif) {
     echo "<input type=\"submit\" name=\"ajouterEquipe\" value=\"ajouter une équipe\">";
     echo"</div>";
 }
-
+/*
+Parametre : tableau associatif
+Affiche la liste des équipes.
+*/
 function afficherListeEquipe($tableauAssociatif) {
     echo "<div class=\"col-md-7\">";
     echo "<table>";
@@ -201,13 +231,21 @@ function afficherBtn() {
     echo"</div>";
 }
 
+/*
+Parametre : tableau associatif
+Affiche plusieurs input pour ajouter une équipe.
+*/
 function AddEquipe($tabass) {
     $i = 1;
-    echo "<input type=\"text\" name=\"nomEquipe\" value=\"\" placeholder=\"Nom de l'équipe\">";
-    echo "<input type=\"text\" name=\"nomResp\" value=\"\" placeholder=\"Nom du responsable\">";
-    echo "<input type=\"text\" name=\"mailResp\" value=\"\" placeholder=\"Mail du responsable\">";
-    echo "<input type=\"text\" name=\"nomSalle\" value=\"\" placeholder=\"Nom de la salle\">";
-    echo "<input type=\"text\" name=\"adresseSalle\" value=\"\" placeholder=\"Adresse de la salle\">";
+	echo "<div class =\"col-md-12\">";
+	echo "<label>Ajout d'une équipe : </label>";
+	echo "</div>";
+	echo "<div class=\" col-md-12\">";
+    echo "<input class=\"inputediter\" type=\"text\" name=\"nomEquipe\" value=\"\" placeholder=\"Nom de l'équipe\">";
+    echo "<input class=\"inputediter\" type=\"text\" name=\"nomResp\" value=\"\" placeholder=\"Nom du responsable\">";
+    echo "<input class=\"inputediter\" type=\"text\" name=\"mailResp\" value=\"\" placeholder=\"Mail du responsable\">";
+    echo "<input class=\"inputediter\" type=\"text\" name=\"nomSalle\" value=\"\" placeholder=\"Nom de la salle\">";
+    echo "<input class=\"inputediter\" type=\"text\" name=\"adresseSalle\" value=\"\" placeholder=\"Adresse de la salle\">";
     echo "<select name=\"addCategorie\">";
     foreach ($tabass as $enregistrement) {
         foreach ($enregistrement as $value) {
@@ -218,16 +256,26 @@ function AddEquipe($tabass) {
     echo '</select>';
     echo "<input type=\"submit\" name=\"btnAnnulerEquipe\" value=\"Annuler\">";
     echo "<input type=\"submit\" name=\"btnAddEquipe\" value=\"Ajouter\">";
+	echo "</div>";
+	echo "</div>";
 }
 
+/*
+Parametre : tableau associatif
+Affiche plusieurs input pour éditer la données d'une équipe choisie.
+*/
 function editerEquipe($dataEquipe, $tabass) {
     $i = 1;
-    echo "<input type=\"hidden\" name=\"idChanger\" value=\"" . $dataEquipe[0]['id_equipe'] . "\">";
-    echo "<input type=\"text\" name=\"nomEquipeChanger\" value=\"" . $dataEquipe[0]['nom_equipe'] . "\">";
-    echo "<input type=\"text\" name=\"nomRespChanger\" value=\"" . $dataEquipe[0]['nom_responsable'] . "\">";
-    echo "<input type=\"text\" name=\"mailRespChanger\" value=\"" . $dataEquipe[0]['mail_responsable'] . "\">";
-    echo "<input type=\"text\" name=\"nomSalleChanger\" value=\"" . $dataEquipe[0]['nom_salle'] . "\">";
-    echo "<input type=\"text\" name=\"adresseSalleChanger\" value=\"" . $dataEquipe[0]['adresse_salle'] . "\">";
+	echo "<div class =\"col-md-12\">";
+	echo "<label>Modification de l'équipe".$dataEquipe[0]['id_equipe']." : </label>";
+	echo "</div>";
+	echo "<div class=\" col-md-12\">";
+    echo "<input class=\"inputediter\" type=\"hidden\" name=\"idChanger\" value=\"" . $dataEquipe[0]['id_equipe'] . "\">";
+    echo "<input class=\"inputediter\" type=\"text\" name=\"nomEquipeChanger\" value=\"" . $dataEquipe[0]['nom_equipe'] . "\">";
+    echo "<input class=\"inputediter\" type=\"text\" name=\"nomRespChanger\" value=\"" . $dataEquipe[0]['nom_responsable'] . "\">";
+    echo "<input class=\"inputediter\" type=\"text\" name=\"mailRespChanger\" value=\"" . $dataEquipe[0]['mail_responsable'] . "\">";
+    echo "<input class=\"inputediter\" type=\"text\" name=\"nomSalleChanger\" value=\"" . $dataEquipe[0]['nom_salle'] . "\">";
+    echo "<input class=\"inputediter\" type=\"text\" name=\"adresseSalleChanger\" value=\"" . $dataEquipe[0]['adresse_salle'] . "\">";
     echo "<select name=\"ChangeCategorie\">";
     foreach ($tabass as $enregistrement) {
         foreach ($enregistrement as $value) {
@@ -237,6 +285,7 @@ function editerEquipe($dataEquipe, $tabass) {
     }
     echo '</select>';
     echo "<input type=\"submit\" name=\"btnEditerEquipe\" value=\"Changer\">";
+	echo "</div>";
 }
 
 //function SupprimerEquipe(){
@@ -244,31 +293,57 @@ function editerEquipe($dataEquipe, $tabass) {
 //    echo "<input type=\"submit\" name=\"btnAnnuler\" value=\"Annuler\">";
 //    echo "<input type=\"submit\" name=\"btnsuppEquipe\" value=\"supprimer\">";
 //}
+
+/*
+Parametre : tableau associatif
+Affiche plusieurs input pour éditer la date d'un match choisi.
+*/
 function editerCalendrier($dataEquipe) {
-    echo "<input type=\"hidden\" name=\"idChanger\" value=\"" . $dataEquipe[0]['id_match'] . "\">";
-    echo "<input type=\"date\" name=\"dateChanger\" value=\"" . $dataEquipe[0]['date_match'] . "\">";
-    echo "<input type=\"submit\" name=\"btnEditerCalendrier\" value=\"Changer\">";
+	echo "<div class =\"col-md-12\">";
+	echo "<label>Modification du match".$dataEquipe[0]['id_match']." : </label>";
+	echo "</div>";
+	echo "<div class=\" col-md-12\">";
+    echo "<input class=\"inputediter\" type=\"hidden\" name=\"idChanger\" value=\"" . $dataEquipe[0]['id_match'] . "\">";
+    echo "<input class=\"inputediter\" type=\"date\" name=\"dateChanger\" value=\"" . $dataEquipe[0]['date_match'] . "\">";
+    echo "<input class=\"inputediter\" type=\"submit\" name=\"btnEditerCalendrier\" value=\"Changer\">";
+	echo "</div>";
+	
 }
 
+/*
+Parametre : tableau associatif
+Affiche plusieurs input pour éditer les données d'un set choisi.
+*/
 function editerSet($dataSet) {
-    echo "<input type=\"hidden\" name=\"idChanger\" value=\"" . $dataSet[0]['id_set'] . "\">";
-
-    echo "<label>n°set</label><input type=\"number\"max=\"5\" min=\"1\" name=\"noSetChanger\" \placeholder=\"n°set\  value=\"" . $dataSet[0]['no_set'] . "\">";
-    echo "<br>";
-    echo "<label>Local</label><input type=\"number\"max=\"25\" min=\"0\" name=\"localChanger\" placeholder=\"Local\" value=\"" . $dataSet[0]['score_local'] . "\">";
-    echo "<br>";
-    echo "<label>Visiteur</label><input type=\"number\"max=\"25\" min=\"0\" name=\"visiteurChanger\" placeholder=\"Visiteur\" value=\"" . $dataSet[0]['score_visiteur'] . "\">";
-
+	echo "<div class =\"col-md-12\">";
+	echo "<label>Modification du set".$dataSet[0]['id_set']." : </label>";
+	echo "</div>";
+	echo "<div class=\" col-md-12\">";
+    echo "<input class=\"inputediter\" type=\"hidden\" name=\"idChanger\" value=\"" . $dataSet[0]['id_set'] . "\">";
+    echo "<input class=\"inputediter\" type=\"number\"max=\"5\" min=\"1\" 
+			name=\"noSetChanger\"\placeholder=\"n°set\  value=\"" . $dataSet[0]['no_set'] . "\">";
+    echo "<input class=\"inputediter\" type=\"number\"max=\"25\" min=\"0\"
+			name=\"localChanger\" placeholder=\"Local\" value=\"" . $dataSet[0]['score_local'] . "\">";
+    echo "<input class=\"inputediter\" type=\"number\"max=\"25\" min=\"0\" 
+			name=\"visiteurChanger\" placeholder=\"Visiteur\" value=\"" . $dataSet[0]['score_visiteur'] . "\">";
     echo "<input type=\"submit\" name=\"btnAnnulerEditerSet\" value=\"Annuler\">";
     echo "<input type=\"submit\" name=\"btnEditerSet\" value=\"Changer\">";
+	echo "</div>";
 }
 
+/*
+Parametre : tableau associatif
+Affiche plusieurs input pour ajouter un nouveau set.
+*/
 function AddSet($tabass) {
     $i = 1;
-
-    echo "<input type=\"number\"max=\"25\" min=\"0\" name=\"sLocal\" value=\"\" placeholder=\"Local\">";
-    echo "<input type=\"number\"max=\"25\" min=\"0\" name=\"sVisiteur\" value=\"\" placeholder=\"Visiteur\">";
-    echo "<input type=\"number\"max=\"5\" min=\"1\" name=\"nSet\" value=\"\" placeholder=\"n°set\">";
+	echo "<div class =\"col-md-12\">";
+	echo "<label>Ajout d'un set : </label>";
+	echo "</div>";
+	echo "<div class=\" col-md-12\">";
+    echo "<input class=\"inputediter\" type=\"number\"max=\"25\" min=\"0\" name=\"sLocal\" value=\"\" placeholder=\"Local\">";
+    echo "<input class=\"inputediter\" type=\"number\"max=\"25\" min=\"0\" name=\"sVisiteur\" value=\"\" placeholder=\"Visiteur\">";
+    echo "<input class=\"inputediter\" type=\"number\"max=\"5\" min=\"1\" name=\"nSet\" value=\"\" placeholder=\"n°set\">";
     echo "<select name=\"addMatchSet\">";
     foreach ($tabass as $enregistrement) {
         foreach ($enregistrement as $value) {
@@ -279,17 +354,26 @@ function AddSet($tabass) {
     echo '</select>';
     echo "<input type=\"submit\" name=\"btnAnnulerSet\" value=\"Annuler\">";
     echo "<input type=\"submit\" name=\"btnAddSet\" value=\"Ajouter\">";
+	echo "</div>";
 }
 
+//Afficher deux boutons pour le controle de la suppresion d'un set.
 function SupprimerSet() {
 
     echo "<input type=\"submit\" name=\"btnAnnuler\" value=\"Annuler\">";
     echo "<input type=\"submit\" name=\"btnsuppSet\" value=\"supprimer\">";
 }
 
+/*
+Parametre : tableau associatif
+Affiche plusieurs input pour ajouter une nouvelle saison.
+*/
 function addSaison($tabass) {
     $i = 1;
-
+	echo "<div class =\"col-md-12\">";
+	echo "<label>Ajout d'une saison : </label>";
+	echo "</div>";
+	echo "<div class=\" col-md-12\">";
     echo "<select name=\"PickCategorie\">";
     foreach ($tabass as $enregistrement) {
         foreach ($enregistrement as $value) {
@@ -298,41 +382,8 @@ function addSaison($tabass) {
         }
     }
     echo '</select>';
-    echo "<input type=\"number\"  min=\"0\"name=\"annee\" value=\"\" placeholder=\"Saison\">";
-    echo "<input type=\"submit\" name=\"btnAnnulerSaison\" value=\"Annuler\">";
-    echo "<input type=\"submit\" name=\"btnAddSaison\" value=\"Ajouter la saison\">";
-}
-function trierClassement($ptsA,$ptsB){
-    return strcmp($ptsB["pts"], $ptsA["pts"]);
-    
-}
-
-function afficherChampionnat($equipes) {
-    echo "<table>";
-	echo "<tr>";
-	echo "<td class=\"entetetab\">Nombre de match</td>";
-	echo "<td class=\"entetetab\">Nom de l'équipe</td>";
-	echo "<td class=\"entetetab\">Nombre de points</td>";
-	echo "<td class=\"entetetab\">Classement</td>";
-	echo "</tr>";
-
-	
-		for($i = 0;$i<count($equipes);$i++){
-			echo "<tr>";
-			echo "<td>";
-			echo $equipes ->_nbMatch[$i] ;
-			echo"</td>";
-			echo "<td>";
-			echo $equipes ->_nomEquipe[$i] ;
-			echo"</td>";
-			echo "<td>";
-			echo $equipes ->_nbPts[$i] ;
-			echo"</td>";
-			echo "<td>";
-			echo $equipes ->_Classement[$i] ;
-			echo"</td>";
-			echo "</tr>";
-		}
-	
-	echo"</table>";
+    echo "<input class=\"inputediter\" type=\"number\"  min=\"0\"name=\"annee\" value=\"\" placeholder=\"Saison\">";
+    echo "<input class=\"inputediter\" type=\"submit\" name=\"btnAnnulerSaison\" value=\"Annuler\">";
+    echo "<input class=\"inputediter\" type=\"submit\" name=\"btnAddSaison\" value=\"Ajouter la saison\">";
+	echo "</div>";
 }

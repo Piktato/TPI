@@ -2,7 +2,7 @@
 session_start();
 require './Fonctions/fonctionsDB.php';
 require './Fonctions/HtmlToPhp.php';
-require 'Pages/classClassement.php';
+require './Fonctions/classClassement.php';
 
 $log = "login";
 $_SESSION["login"] = $log;
@@ -15,6 +15,7 @@ $_SESSION["triMatchSaison"] = 1;
 $equipeClassement = [];
 $tabEquipe = [];
 $totalpoint =0 ;
+$_SESSION["newSaison"]= 0;
 
 
 
@@ -79,11 +80,15 @@ if (isset($_REQUEST['filtrer'])) {
                     afficherSelectSaison(getAnnee());
                     afficherBtn();
                     if (isset($_REQUEST["filtrer"])) {
+						if($equipe !=null)
+						{
+							
+						
                         $match = getMatchBySaisonCategorie($choixSaison, $equipe[0]["equipe"]);
                         
 						
 						$equipes = new equipe;
-						$tempEquipeName = getEquipeName($choixSaison);
+						$tempEquipeName = getEquipeName($choixSaison,$choixCategorie);
 						$tempEquipeId = getEquipeClassement($choixSaison,$choixCategorie);
 							
 						for($i = 0;$i<count($tempEquipeName);$i++)
@@ -168,7 +173,11 @@ if (isset($_REQUEST['filtrer'])) {
 						
 						echo"</table>";
 						echo"</div>";
-						
+						}
+						else
+						{
+							echo "Pas d'équipe dans la catégorie choisie";
+						}
                     }
 
                     ?>
